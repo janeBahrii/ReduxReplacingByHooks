@@ -28,15 +28,32 @@ const initualValue = [
 ];
 type ProductsType = typeof initualValue;
 
-export const ProductContext = React.createContext<{ products: ProductsType }>({ products: [] });
+export const ProductContext = React.createContext<{ products: ProductsType, toggleFavorite: (id: string) => void }>({ products: [], toggleFavorite: (id: string) => { } });
 
 interface Props {
 
 }
 const ProductProvider: React.FunctionComponent<Props> = (props) => {
-    const [productState, setProductState] = useState(initualValue);
+    const [productList, setProductList] = useState(initualValue);
+    const toggleFavorite = (productId: string) => {
+        setProductList(prevPrList => {
+            const prodIndex = prevPrList.findIndex(
+                p => p.id === productId
+            );
+            const newFavStatus = !prevPrList[prodIndex].isFavorite;
+            const updatedProducts = [...prevPrList];
+            updatedProducts[prodIndex] = {
+                ...prevPrList[prodIndex],
+                isFavorite: newFavStatus
+            };
+            return updatedProducts;
+        })
+
+
+
+    }
     return (
-        <ProductContext.Provider value={{ products: productState }}>
+        <ProductContext.Provider value={{ products: productList, toggleFavorite }}>
             {props.children}
         </ProductContext.Provider >
 
