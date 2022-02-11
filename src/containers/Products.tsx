@@ -1,16 +1,16 @@
-import React from 'react';
-import { useSelector } from 'react-redux';
-
+import React, { useContext } from 'react';
 import ProductItem from '../components/Products/ProductItem';
+import { ProductContext } from '../context/products-context';
 import './Products.css';
-import { IRootState } from "../index";
+
 
 interface Props {
 
 }
 
 const Products: React.FC<Props> = props => {
-  const productList = useSelector((state: IRootState) => state.shop.products);
+  const productCtx = useContext(ProductContext);
+  const productList = productCtx.products;
   return (
     <ul className="products-list">
       {productList.map(prod => (
